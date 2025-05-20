@@ -1,0 +1,24 @@
+
+# Opciones de Apache
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Si quisieras URLs más limpias como /backend/productos en lugar de /backend/api.php?r=productos,
+    # necesitarías reglas más complejas aquí.
+    # Por ahora, este archivo está principalmente vacío ya que usamos api.php?r=...
+
+    # Ejemplo de una regla muy básica si quisieras redirigir todo a api.php (requiere más configuración):
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteCond %{REQUEST_FILENAME} !-d
+    # RewriteRule ^(.*)$ api.php?r=$1 [QSA,L]
+    # Pero esto no es necesario para el enfoque actual con ?r=
+
+</IfModule>
+
+# Deshabilitar el listado de directorios por seguridad
+Options -Indexes
+
+# Proteger archivos sensibles (si los tuvieras)
+<FilesMatch "^\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|env)$">
+    Require all denied
+</FilesMatch>
