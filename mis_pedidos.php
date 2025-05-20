@@ -40,6 +40,11 @@ if (isset($_SESSION['cliente_id'])) {
         error_log("Error PDO en mis_pedidos.php para cliente ID {$idCliente}: " . $e->getMessage());
         registrarEnBitacora($pdo, $idCliente, 'Error Carga Mis Pedidos', $e->getMessage());
     }
+    // Mostrar mensajes flash si existen
+    if (isset($_SESSION['mensaje_flash_mis_pedidos'])) {
+    echo "<p class='" . htmlspecialchars($_SESSION['mensaje_flash_mis_pedidos_tipo'] ?? 'success') . "'>" . htmlspecialchars($_SESSION['mensaje_flash_mis_pedidos']) . "</p>";
+    unset($_SESSION['mensaje_flash_mis_pedidos'], $_SESSION['mensaje_flash_mis_pedidos_tipo']);
+    }
 }
 ?>
 
@@ -71,7 +76,9 @@ if (isset($_SESSION['cliente_id'])) {
                                 <td>$<?php echo htmlspecialchars(number_format($pedido['total'], 2)); ?></td>
                                 <td><?php echo htmlspecialchars($pedido['estado']); ?></td>
                                 <td>
-                                    <button type="button" onclick="alert('Funcionalidad de ver detalle aún no implementada.');" style="font-size:0.9em; padding: 5px 8px;">Ver Detalle</button>
+                                    <a href="<?php echo obtener_url_base(); ?>detalle_pedido.php?id=<?php echo htmlspecialchars($pedido['id_pedido']); ?>">
+                                        <button type="button" style="font-size:0.9em; padding: 5px 8px;">Ver Detalle</button>
+                                    </a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

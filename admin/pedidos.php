@@ -14,6 +14,11 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 // Admin está logueado, mostrar navegación de admin
 require_once __DIR__ . '/../includes/nav_admin.php';
 
+// Mostrar mensajes flash de acciones sobre pedidos
+if (isset($_SESSION['mensaje_flash_pedidos_admin'])) {
+    echo "<p class='" . htmlspecialchars($_SESSION['mensaje_flash_pedidos_admin_tipo'] ?? 'success') . "' style='padding: 10px; border-radius: 5px; margin-bottom:15px;'>" . htmlspecialchars($_SESSION['mensaje_flash_pedidos_admin']) . "</p>";
+    unset($_SESSION['mensaje_flash_pedidos_admin'], $_SESSION['mensaje_flash_pedidos_admin_tipo']); // Limpiar mensaje
+}
 $todos_los_pedidos = [];
 $mensaje_error_lista_pedidos = '';
 $filtro_estado = $_GET['filtro_estado'] ?? ''; // Para filtrar por estado
@@ -110,8 +115,10 @@ $estados_posibles = ['Pendiente', 'Procesando', 'Enviado', 'Entregado', 'Cancela
                                     </form>
                             </td>
                             <td>
-                                <button type="button" onclick="alert('Ver detalle del pedido ID <?php echo $pedido['id_pedido']; ?> - Funcionalidad aún no implementada.');" style="font-size:0.9em; padding: 5px 8px;">Ver Detalle</button>
-                                </td>
+                                <a href="<?php echo obtener_url_base(); ?>admin/detalle_pedido_admin.php?id=<?php echo htmlspecialchars($pedido['id_pedido']); ?>">
+                                    <button type="button" style="font-size:0.9em; padding: 5px 8px;">Ver Detalle</button>
+                                </a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
